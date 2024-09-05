@@ -4,7 +4,11 @@ const { readFromFile, writeToFile, readAndAppend } = require("../utilities/fs");
 // get note
 note.get("/", (req, res) => {
   // parses JSON data response
-  readFromFile("./develop/db/db.json").then((data) => res.json(JSON.parse(data)));
+  readFromFile("./develop/db/db.json").then((data) => res.json(JSON.parse(data)))
+  .catch((err) => {
+    console.error("Error reading file", err);
+    res.status(500).json({error: "Failed to read notes"});
+  });
 });
 
 // creates a new note
@@ -15,27 +19,34 @@ note.post("/", (req, res) => {
   // check if title and text exist
   if (title && text) {
     // this grabs the current date
-    var id = Date.now();
+    const id = Date.now();
     // construct a new note object with the title and text 
     const addNote = {
       title,
       text,
       id,
     };
-    // write note information to db.json
-    console.log(addNote);
-
-    readAndAppend(addNote, "./develop/db/db.json");
-
    
-    // sends a response to the user
-    console.log("Note added successfully");
-    res.json("Note added successfully");
-  } else {
-    console.error("Note not added");
-    res.error("Note not added");
-  }
+    readAndAppend(addNote, "./develop/db/db.json")
+    .then(() => {
+        console.log("Note added successfully");
+        res.status(201).json({ message: "Note added successfully", note: addNote});
+    })
+    .catch((err) => {
+        console.error("Error adding note", err);
+        res.status(500).json({error: "Failed to add note"});
+    });
+} else {
+    console.error("Note not added. Missing title or text.");
+    res.status(400).json({error: "Note not added. Titile and text are required."});
+}
+
 });
+
+
+
+    
+ 
 
 // deletes note
 
