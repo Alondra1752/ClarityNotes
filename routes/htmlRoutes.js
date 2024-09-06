@@ -4,7 +4,7 @@ const { readFromFile, writeToFile, readAndAppend } = require("../utilities/fs");
 // get note
 note.get("/", (req, res) => {
   // parses JSON data response
-  readFromFile("./develop/db/db.json").then((data) => res.json(JSON.parse(data)))
+  readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)))
   .catch((err) => {
     console.error("Error reading file", err);
     res.status(500).json({error: "Failed to read notes"});
@@ -27,7 +27,7 @@ note.post("/", (req, res) => {
       id,
     };
    
-    readAndAppend(addNote, "./develop/db/db.json")
+    readAndAppend(addNote, "./db/db.json")
     .then(() => {
         console.log("Note added successfully");
         res.status(201).json({ message: "Note added successfully", note: addNote});
@@ -43,11 +43,6 @@ note.post("/", (req, res) => {
 
 });
 
-
-
-    
- 
-
 // deletes note
 
 note.delete("/:id", (req, res) => {
@@ -55,15 +50,23 @@ note.delete("/:id", (req, res) => {
   const id = Number(req.params.id);
 
   // gets the notes from db.json folder
-  readFromFile("./develop/db/db.json")
+  readFromFile("./db/db.json")
     .then((data) => JSON.parse(data))
     .then((json) => {
       // filters out the note to the matching id
       const result = json.filter((note) => note.id !== id);
-      
-      writeToFile("./develop/db/db.json", result);
-      res.json("Note has been deleted");
-      console.log("Note has been deleted");
+      if (result.length === json.length) {
+        return res.status(404).json({ error: "Note not found"});
+      }
+      return writeToFile("./db/db.json", result);
+    })
+    .then(() => {
+        console.log("Note has been deleted");
+        res.json({ message: "Note has been deleted"});
+    })
+    .catch((err) => {
+        console.error("Error deleting note", err);
+        res.status(500).json({error: "Failed to delete note"});
     });
 });
 
