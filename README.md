@@ -38,9 +38,10 @@ If you'd like to contribute to the development of the Notes App, please fork the
 
 ## Links
 
-Deployment Link: 
+Render Link: https://claritynotes.onrender.com
 
-Repository Link: 
+Repository Link: https://github.com/Alondra1752/ClarityNotes
+
 
 ## License 
 
