@@ -20,25 +20,25 @@ note.post("/", (req, res) => {
   if (title && text) {
     // this grabs the current date
     const id = Date.now();
-    // construct a new note object with the title and text 
+    //  new note object with the title and text 
     const addNote = {
       title,
       text,
       id,
     };
    
-    readAndAppend(addNote, "./db/db.json")
+    readAndAppend(addNote, path.join(_dirname, '../db/db.json'))
     .then(() => {
-        console.log("Note added successfully");
-        res.status(201).json({ message: "Note added successfully", note: addNote});
+        console.log('Note added successfully');
+        res.status(201).json({ message: 'Note added successfully', note: addNote});
     })
     .catch((err) => {
-        console.error("Error adding note", err);
-        res.status(500).json({error: "Failed to add note"});
+        console.error('Error adding note', err);
+        res.status(500).json({error: 'Failed to add note'});
     });
 } else {
-    console.error("Note not added. Missing title or text.");
-    res.status(400).json({error: "Note not added. Titile and text are required."});
+    console.error('Note not added. Missing title or text.');
+    res.status(400).json({error: 'Note not added. Titile and text are required.'});
 }
 
 });
