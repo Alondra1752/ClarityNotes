@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { readFromFile, writeToFile, readAndAppend } = require('./utilities/fs.js'); // Adjust path as necessary
+const { readFromFile, writeToFile, readAndAppend } = require('../utilities/fs.js'); // Adjust path as necessary
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON request bodies
