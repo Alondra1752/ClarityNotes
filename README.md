@@ -42,6 +42,10 @@ Render Link: https://claritynotes.onrender.com
 
 Repository Link: https://github.com/Alondra1752/ClarityNotes
 
+## Resources 
+
+ChatGPT, W3 Schools, Classroom assignments, Xpert Learning Assistant 
+
 
 ## License 
 
